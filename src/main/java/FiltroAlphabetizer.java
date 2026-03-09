@@ -43,6 +43,7 @@ public class FiltroAlphabetizer extends Filtro {
         for (Integer indice : indicesOrdenados) {
             lineasO.append(lineas.get(indice)).append("\n");
         }
+
         tuberiaSalida.put(lineasO.toString());
     }
 }

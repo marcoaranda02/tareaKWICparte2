@@ -32,7 +32,7 @@ public class main {
         Filtro entrada = new FiltroLectorPDF(tuberia1, rutaCompletaPDF);
         Filtro filtroBuscador = new FiltroBuscadorIndice(tuberia1, tuberia2, rutaCompletaTXT);
         Filtro alphabetizer = new FiltroAlphabetizer(tuberia2, tuberia3);
-        Filtro salida = new FiltroSalida(tuberia3);
+        Filtro salida = new FiltroSalidaUnificador(tuberia3);
 
    //Ejecución de hilos
         new Thread(entrada).start();
