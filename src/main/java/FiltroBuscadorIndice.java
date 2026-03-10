@@ -16,7 +16,7 @@ public class FiltroBuscadorIndice extends Filtro {
         super(entrada, salida);
         this.nombreArchivo = archivo;
     }
-
+//se le da la ruta del archivo txt donde regresara una lista de Strings con las palabras a buscar
     private List<String> cargarPalabrasClave(String ruta) {
         List<String> palabras = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(ruta))) {
@@ -34,7 +34,7 @@ public class FiltroBuscadorIndice extends Filtro {
 
     @Override
     protected void procesar() throws InterruptedException {
-        // Cargamos las palabras clave del archivo .txt
+        // Cargamos las palabras clave del archivo .txt y se le asignan a la lista palabrasBuscar
         palabrasBuscar = cargarPalabrasClave(nombreArchivo);
 
         while (true) {
@@ -51,17 +51,19 @@ public class FiltroBuscadorIndice extends Filtro {
 
            //si si se tiene contenido e indice
             if (partes.length >= 2) {
-                String contenidoLinea = partes[0];
+                String lineaActual = partes[0];
                 String indicePagina = partes[1];
 
-//se compara el contenido de la linea actual con las palabras a buscar
+//se recorre la lista palabras buscar buscando coincidencia con las lineas entrantes, palabra es el indice actual en la lista palabrasbuscar
                 for (String palabra : palabrasBuscar) {
                     // Buscamos la palabra exacta
+                    //se instancia el patron que buscara una coincidencia con la palabra del indice actual, buscando que se encuentre totalmente separado
                     Pattern patron = Pattern.compile("(?i)\\b" + Pattern.quote(palabra) + "\\b");
-                    Matcher buscador = patron.matcher(contenidoLinea);
+                    //se instancia el buscador que recibirá como parametro la linea actual
+                    Matcher buscador = patron.matcher(lineaActual);
 
                     while (buscador.find()) {
-   //se envia la palabra si se encontro y la pagina
+   //se envia la palabra del indice actual de la lista si se encontro y la pagina
                         String resultado = palabra + " : " + indicePagina;
                         tuberiaSalida.put(resultado);
                     }

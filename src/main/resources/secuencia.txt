@@ -1,0 +1,48 @@
+@startuml
+skinparam style strictuml
+autonumber
+
+actor Usuario
+participant "main" as M
+participant "LectorPDF" as L
+participant "BuscadorIndice" as B
+participant "Alphabetizer" as A
+participant "SalidaUnificador" as S
+database "Sistema Archivos" as FS
+
+Usuario -> M: Ingresa nombres de archivos
+M -> FS: Busca PDF y TXT (Palabras clave)
+
+group Ejecución en Paralelo (Hilos)
+    M -> L: start()
+    M -> B: start()
+    M -> A: start()
+    M -> S: start()
+end
+
+note over L: primero recorre una pagina \n y va enviando cada linea de este
+
+L -> FS: Leer PDF
+L -> B: Enviar "linea:pagina" (tuberia1)
+B -> B: Buscar palabras clave
+
+loop Por cada coincidencia
+    B -> A: Enviar "palabra : pagina" (tuberia2)
+end
+
+L -> B: Enviar "EOF"
+B -> A: Enviar "EOF"
+
+
+note over A: Ordena alfabéticamente\nal recibir datos o EOF
+note over A: Como van llegando envia de \n nuevo la lista de lineas
+A -> S: Enviar lista ordenada (tuberia3)
+A -> S: Enviar "EOF"
+note over S: organiza los indices a como van llegando\n,igual que el alphabetizer
+
+note over S: Consolida índices:\n"Palabra : 1, 4, 10"
+note over S: Imprime el resultado cuando recibe EOF
+
+S -> FS: Escribir "salida.txt"
+S -> Usuario: Imprimir consola
+@enduml

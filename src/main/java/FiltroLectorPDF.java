@@ -13,7 +13,7 @@ public class FiltroLectorPDF extends Filtro {
 
     //constructor del filtro tiene la salida a donde enviara las lineas y la ruta del pdf
     public FiltroLectorPDF(BlockingQueue<String> salida, String ruta) {
-        super(null, salida); // No requiere entrada, debido a que su "ertrada" es el la ruta del pdf
+        super(null, salida); // No requiere entrada, debido a que su "entrada" es el la ruta del pdf
         this.rutaArchivo = ruta;
     }
 
@@ -25,7 +25,7 @@ public class FiltroLectorPDF extends Filtro {
             PDFTextStripper stripper = new PDFTextStripper();
             //se obtiene el total de paginas
             int totalPaginas = documento.getNumberOfPages();
-
+//se itera la cantidad total de pagines
             for (int i = 1; i <= totalPaginas; i++) {
                 //se instancia de donde a donde se realizara la extracción
                 //en este caso del principio de la pagina 1 al final de esta misma
@@ -33,7 +33,7 @@ public class FiltroLectorPDF extends Filtro {
                 stripper.setEndPage(i);
                 //se extrae todo el texto de la pagina actual
                 String textoPagina = stripper.getText(documento);
-                //se crea un arreglo de lineas a partir de la pagina actual
+                //se crea un arreglo de lineas a partir de la pagina actual, el r es para procesar los saltos de linea estilo Windows
                 String[] lineas = textoPagina.split("\\r?\\n");
 //se recorre cada linea del arreglo para enviarselo al siguiente filtro
                 for (String linea : lineas) {
