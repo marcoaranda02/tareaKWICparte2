@@ -31,16 +31,24 @@ public class FiltroAlphabetizer extends Filtro {
     private void OrdenarLineas() throws InterruptedException {
         indicesOrdenados.clear();
         int numLineas = lineas.size();
+        //se recorre un ciclo for hasta que se recorran todas las lineas
         for (int i = 0; i < numLineas; i++) {
             int pos = 0;
+// Busca el punto de inserción: recorre los índices ya ordenados 
+        // hasta encontrar una palabra que sea alfabéticamente "mayor" que la actual
             while (pos < indicesOrdenados.size()
                     && lineas.get(i).toLowerCase().compareTo(lineas.get(indicesOrdenados.get(pos)).toLowerCase()) > 0) {
+                        //suma la posición para compararlo con el que sigue
                 pos++;
             }
+           //la lista de indices es la que se actualiza
             indicesOrdenados.add(pos, i);
         }
         StringBuilder lineasO = new StringBuilder();
+        //por ejemplo se tiene fresa,aranda,carlos
+        //la lista de indices sería algo como [1,2,0]
         for (Integer indice : indicesOrdenados) {
+            //se imprimiria el aranda,carlos,fresa 
             lineasO.append(lineas.get(indice)).append("\n");
         }
 
